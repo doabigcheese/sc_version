@@ -6,7 +6,7 @@ let live,ptu
 let url = "https://robertsspaceindustries.com/roadmap/progress-tracker/teams"
 let view = new WebView()
 await view.loadURL(url)
-sleep(5000)
+sleep(10000)
 let html = await view.getHTML()
 
 //console.log(html.length)
@@ -14,6 +14,7 @@ let html = await view.getHTML()
 let regex_live = /Live Version\: (.*?) /
 let regex_ptu = /PTU Version\: (.*?)\</
 let version_live = html.match(regex_live)
+
 live = version_live[1]
 let version_ptu = html.match(regex_ptu)
 ptu = version_ptu[1]
@@ -21,9 +22,13 @@ ptu = version_ptu[1]
 console.log(live)
 console.log(ptu)
 
+let req = new Request("https://www.dpgaming.de/images/DPG.ico?1625848083")
+let image = await req.loadImage()
+
 
 
 let widget = createWidget();
+widget.backgroundImage = image
 if (!config.runsInWidget) {
   await widget.presentSmall()
 }
@@ -36,22 +41,49 @@ function createWidget() {
 
 	// Ueberschrift
 	let texti = row.addText("SC Version")
-    texti.font = Font.mediumSystemFont(10)
+    texti.font = Font.boldSystemFont(18)
+    texti.textColor  = Color.red()
+    texti.shadowColor = Color.black()
+    texti.shadowOffset = new Point(1,1)
+    texti.shadowRadius = 1
     texti.centerAlignText()
     w.addSpacer(3)
+    
     row = w.addStack()
     texti = row.addText("Live:")
+    texti.font = Font.boldSystemFont(18)
+    texti.textColor  = Color.red()
+    texti.shadowColor = Color.black()
+    texti.shadowOffset = new Point(1,1)
+    texti.shadowRadius = 1    
     row.addSpacer()
     texti = row.addText(live)
+    texti.font = Font.boldSystemFont(18)
+    texti.textColor  = Color.red()
+    texti.shadowColor = Color.black()
+    texti.shadowOffset = new Point(2,2)
+    texti.shadowRadius = 1    
     texti.rightAlignText()
     
     row = w.addStack()
     texti = row.addText("PTU:")
+    texti.font = Font.boldSystemFont(18)
+    texti.textColor  = Color.red()
+    texti.shadowColor = Color.black()
+    texti.shadowOffset = new Point(1,1)
+    texti.shadowRadius = 1    
     row.addSpacer()
     texti = row.addText(ptu)
+    texti.font = Font.boldSystemFont(18)
+    texti.textColor  = Color.red() 
+    texti.shadowColor = Color.black()
+    texti.shadowOffset = new Point(2,2)
+    texti.shadowRadius = 1    
     texti.rightAlignText()
     
+
     return w
+    
 }
 
 function sleep(milliseconds) {
